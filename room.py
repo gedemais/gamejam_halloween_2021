@@ -1,6 +1,7 @@
 import pygame
 import os
 from random import shuffle, randrange
+from player import *
 
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
@@ -16,8 +17,8 @@ class Room:
         self.bg = pygame.image.load(bg_tile_path)
         self.sprites = []
         self.animations = []
-        self.wallboxes = []
         self.interactions = []
+        self.wallboxes = []
 
     def add_animation(self, sprites_path, nb_frames, x, y):
         if x < 0 or x > screen_width or y < 0 or y > screen_height:
@@ -40,6 +41,9 @@ class Room:
             self.sprites.append((img, x, y))
         else:
             self.sprites.append((pygame.image.load(sprite_path), x, y))
+
+    def add_wallbox(self, pos_x, pos_y, width, height):
+        self.wallboxes.append(Hitbox(pos_x, pos_y, width, height))
 
     def add_interaction(self, text, key, hitbox, proc):
         self.interactions.append((text, key, hitbox, proc))
@@ -87,6 +91,8 @@ class Room:
         self.maze.pop(len(self.maze) - 2)
 
         tile = pygame.image.load(sprite_path)
+        tw = tile.get_width()
+        th = tile.get_height()
 
         self.nb_sprites = 0
         for y, line in enumerate(self.maze):
@@ -97,10 +103,10 @@ class Room:
                     self.maze[y][x] = 0
                 if self.maze[y][x] == 1:
                     self.nb_sprites += 1
-                    self.add_sprite("",
-                                    pos_x + (x * tile.get_width()),
-                                    pos_y + (y * tile.get_height()),
-                                    tile)
+                    tx = pos_x + (x * tw)
+                    ty = pos_y + (y * th)
+                    self.add_sprite("", tx, ty, tile)
+                    self.wallboxes.append(Hitbox(tx, ty, tw, th))
 
         for y, line in enumerate(self.maze):
             for x, val in enumerate(line):
@@ -117,8 +123,8 @@ class Room:
             self.make_maze(w, h, sprite_path, pos_x, pos_y)
 
     def destroy_maze(self):
-        for i in range(self.nb_sprites):
-            self.sprites.pop()
+        self.wallboxes.clear()
+        self.sprites.clear()
         del(self.maze)
 
     def run(self, screen, player, events):

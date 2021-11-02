@@ -4,8 +4,7 @@ NORTH=0
 SOUTH=1
 EAST=2
 WEST=3
-E=4
-F=5
+V=4
 
 
 directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
@@ -56,7 +55,9 @@ class   Player:
             self.bot_walk.append(self.walk_ss.subsurface(x, res * 3, res, res))
             x += res
 
-    def walk(self, arrows):
+    def walk(self, arrows, room):
+        tmp_x = self.x
+        tmp_y = self.y
         try:
             self.direction = arrows.index(True)
             self.last_direction = self.direction
@@ -64,6 +65,13 @@ class   Player:
                 if arrows[i]:
                     self.x += directions[i][0] * self.speed
                     self.y += directions[i][1] * self.speed
+            
+            self.hitbox.update_box(self.x + 32, self.y + 64)
+            for wallbox in room.wallboxes:
+                if self.hitbox.is_hit(wallbox):
+                    self.x = tmp_x
+                    self.y = tmp_y
+                    break
 
             self.substep += 1
             if self.substep >= int(8 / self.speed):

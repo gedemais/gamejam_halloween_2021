@@ -1,6 +1,7 @@
 import pygame
 from player import *
 from room import Room
+from os import system
 
 #########################
 pygame.init()
@@ -28,16 +29,22 @@ room = 'spawner'
 rooms[room].add_sprite('resources/sprites/PNJ/dumbledore.png', 560, 436)
 
 rooms[room].add_sprite('resources/sprites/chaudron.png', 600, 284)
-rooms[room].add_sprite('resources/sprites/bench/bench.png', 680, 280)
+rooms[room].add_wallbox(600, 284, 48, 58)
+
 rooms[room].add_sprite('resources/sprites/almanach/gueridon.png', 500, 260)
+rooms[room].add_wallbox(520, 280, 52, 64)
+
+rooms[room].add_sprite('resources/sprites/bench/bench.png', 680, 280)
+rooms[room].add_wallbox(690, 280, 86, 64)
+
 
 rooms[room].add_sprite('resources/sprites/halloween/bones.png', 100, 10)
 rooms[room].add_sprite('resources/sprites/halloween/eye.png', 620, 200)
 
-rooms[room].add_sprite('resources/sprites/halloween/column.png', 400, 120)
-rooms[room].add_sprite('resources/sprites/halloween/column.png', 800, 120)
-rooms[room].add_sprite('resources/sprites/halloween/column_c.png', 400, 420)
-rooms[room].add_sprite('resources/sprites/halloween/column.png', 800, 420)
+rooms[room].add_sprite('resources/sprites/halloween/column.png', 350, 100)
+rooms[room].add_sprite('resources/sprites/halloween/column.png', 850, 100)
+rooms[room].add_sprite('resources/sprites/halloween/column_c.png', 350, 440)
+rooms[room].add_sprite('resources/sprites/halloween/column.png', 850, 440)
 
 
 # Portals
@@ -45,6 +52,7 @@ rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 50)
 rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 200)
 rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 350)
 rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 500)
+
 
 ############################ BLUE ROOM #############################
 room = 'blue'
@@ -80,7 +88,8 @@ rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 
 room = 'spawner'
 
-keys = [False, False, False, False, False, False] # e, f
+keys = [False, False, False, False]
+v = False
 
 
 ############################# Interactions #########################
@@ -185,6 +194,8 @@ def toggle_potions_hook():
 def open_potions():
     if potions_hook == False:
         return
+    if v:
+        system('open https://www.youtube.com/watch?v=uDGbCUKqQyQ')
     screen.blit(almanach_potions, (100, 66))
 
 rooms['spawner'].add_interaction("Appuyez sur E pour ouvrir l'almanach",
@@ -193,6 +204,25 @@ rooms['spawner'].add_interaction("Appuyez sur E pour ouvrir l'almanach",
                                 toggle_potions_hook)
 #################
 
+########## Bench
+bench = pygame.image.load('resources/sprites/bench/background.png')
+
+bench_hook = False
+
+def toggle_bench_hook():
+    global bench_hook
+    bench_hook = False if bench_hook == True else True
+
+def open_bench():
+    if bench_hook == False:
+        return
+    screen.blit(bench, (100, 66))
+
+rooms['spawner'].add_interaction("Appuyez sur E pour experimenter",
+                                pygame.K_e,
+                                Hitbox(680, 280, 96, 64),
+                                toggle_bench_hook)
+#################
 
 ####################################################################
 
@@ -201,6 +231,7 @@ events = []
 def handle_keys(events):
     global keys
     global room
+    global v
     for event in events:
         if event.type == pygame.QUIT:
             exit(0)
@@ -215,9 +246,8 @@ def handle_keys(events):
                 keys[WEST] = True
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 keys[EAST] = True
-
-            if event.key == pygame.K_SPACE:
-                room = 'blue' if room == 'spawner' else 'spawner'
+            if event.key == pygame.K_v:
+                v = True
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_UP or event.key == pygame.K_w:
@@ -228,6 +258,8 @@ def handle_keys(events):
                 keys[WEST] = False
             if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                 keys[EAST] = False
+            if event.key == pygame.K_v:
+                v = False
 
 
 def run():
@@ -240,18 +272,19 @@ def run():
 
         rooms[room].run(screen, player, events)
 
-        player.hitbox.update_box(player.x + 32, player.y + 64)
         color = (255, 255, 255)
-        pygame.draw.rect(screen, color, pygame.Rect(player.hitbox.x, player.hitbox.y, 32, 32))
+        #pygame.draw.rect(screen, color, pygame.Rect(player.hitbox.x, player.hitbox.y, 32, 32))
         #for interaction in rooms[room].interactions:
         #    hitbox = interaction[2]
         #    pygame.draw.rect(screen, color, pygame.Rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height))
 
-        img, dims = player.walk(keys)
+        img, dims = player.walk(keys, rooms[room])
 
         screen.blit(img, dims)
 
-        open_potions()
+        if room == 'spawner':
+            open_potions()
+            open_bench()
 
         pygame.display.update()
         clock.tick(60)
