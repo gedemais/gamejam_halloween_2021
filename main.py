@@ -231,7 +231,7 @@ def open_potions():
     if potions_hook == False:
         return
     if v:
-        system('open https://www.youtube.com/watch?v=uDGbCUKqQyQ')
+        system('osascript -e \"set Volume 10\" ; open https://www.youtube.com/watch?v=uDGbCUKqQyQ')
     screen.blit(almanach_potions, (100, 66))
 
 rooms['spawner'].add_interaction("Appuyez sur E pour ouvrir l'almanach",
