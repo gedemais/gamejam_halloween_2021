@@ -127,8 +127,8 @@ class Room:
         self.sprites.clear()
         del(self.maze)
 
-    def run(self, screen, player, events):
-        self.draw(screen)
+    def run(self, screen, player, events, keys):
+        self.draw(screen, player, keys)
         self.handle_interactions(screen, player, events)
 
     def handle_interactions(self, screen, player, events):
@@ -146,7 +146,7 @@ class Room:
                         if event.key == interaction[1]:
                             interaction[3]()
 
-    def draw(self, screen):
+    def draw(self, screen, player, keys):
         # background
         for x in range(0, screen_width, self.bg.get_width()):
             for y in range(0, screen_height, self.bg.get_height()):
@@ -162,4 +162,9 @@ class Room:
             anim['index'] += 1
             if anim['index'] >= anim['nb_frames']:
                 anim['index'] = 0
+
+        # player
+        img, dims = player.walk(keys, self)
+
+        screen.blit(img, dims)
 

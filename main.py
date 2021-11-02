@@ -27,6 +27,7 @@ rooms = {
 ############################ SPAWNER ROOM #############################
 room = 'spawner'
 rooms[room].add_sprite('resources/sprites/PNJ/dumbledore.png', 560, 436)
+rooms[room].add_wallbox(560, 468, 96, 48)
 
 rooms[room].add_sprite('resources/sprites/chaudron.png', 600, 284)
 rooms[room].add_wallbox(600, 284, 48, 58)
@@ -42,9 +43,18 @@ rooms[room].add_sprite('resources/sprites/halloween/bones.png', 100, 10)
 rooms[room].add_sprite('resources/sprites/halloween/eye.png', 620, 200)
 
 rooms[room].add_sprite('resources/sprites/halloween/column.png', 350, 100)
+rooms[room].add_wallbox(350, 110, 72, 195)
 rooms[room].add_sprite('resources/sprites/halloween/column.png', 850, 100)
+rooms[room].add_wallbox(850, 110, 72, 195)
 rooms[room].add_sprite('resources/sprites/halloween/column_c.png', 350, 440)
+rooms[room].add_wallbox(350, 500, 72, 145)
 rooms[room].add_sprite('resources/sprites/halloween/column.png', 850, 440)
+rooms[room].add_wallbox(850, 450, 72, 195)
+# Walls
+rooms[room].add_wallbox(-10, -10, 10, 740)
+rooms[room].add_wallbox(1280, -10, 10, 740)
+rooms[room].add_wallbox(-10, -10, 1290, 65)
+rooms[room].add_wallbox(-10, 720, 1290, 65)
 
 
 # Portals
@@ -56,35 +66,60 @@ rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 500)
 
 ############################ BLUE ROOM #############################
 room = 'blue'
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/poseidon.png', 1200, 380)
+rooms[room].add_wallbox(1210, 390, 72, 142)
 rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 
+# Walls
+rooms[room].add_wallbox(-10, -10, 10, 740)
+rooms[room].add_wallbox(1280, -10, 10, 740)
+rooms[room].add_wallbox(-10, -10, 1290, 65)
+rooms[room].add_wallbox(-10, 720, 1290, 65)
 ############################ GREEN ROOM #############################
 room = 'green'
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/panoramix.png', 1180, 430)
+rooms[room].add_wallbox(1190, 440, 72, 96)
 rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 
+# Walls
+rooms[room].add_wallbox(-10, -10, 10, 740)
+rooms[room].add_wallbox(1280, -10, 10, 740)
+rooms[room].add_wallbox(-10, -10, 1290, 65)
+rooms[room].add_wallbox(-10, 720, 1290, 65)
 ############################ GREEN ROOM #############################
 room = 'red'
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/tortue_geniale.png', 1210, 470)
+rooms[room].add_wallbox(1210, 470, 56, 96)
 rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 
+# Walls
+rooms[room].add_wallbox(-10, -10, 10, 740)
+rooms[room].add_wallbox(1280, -10, 10, 740)
+rooms[room].add_wallbox(-10, -10, 1290, 65)
+rooms[room].add_wallbox(-10, 720, 1290, 65)
 ############################ GREEN ROOM #############################
 room = 'purple'
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/gandalf.png', 1180, 450)
+rooms[room].add_wallbox(1200, 450, 96, 128)
 rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
+
+# Walls
+rooms[room].add_wallbox(-10, -10, 10, 740)
+rooms[room].add_wallbox(1280, -10, 10, 740)
+rooms[room].add_wallbox(-10, -10, 1290, 65)
+rooms[room].add_wallbox(-10, 720, 1290, 65)
 
 room = 'spawner'
 
@@ -267,20 +302,9 @@ def run():
     running = True
     while running:
         events = pygame.event.get()
-
         handle_keys(events)
 
-        rooms[room].run(screen, player, events)
-
-        color = (255, 255, 255)
-        #pygame.draw.rect(screen, color, pygame.Rect(player.hitbox.x, player.hitbox.y, 32, 32))
-        #for interaction in rooms[room].interactions:
-        #    hitbox = interaction[2]
-        #    pygame.draw.rect(screen, color, pygame.Rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height))
-
-        img, dims = player.walk(keys, rooms[room])
-
-        screen.blit(img, dims)
+        rooms[room].run(screen, player, events, keys)
 
         if room == 'spawner':
             open_potions()
