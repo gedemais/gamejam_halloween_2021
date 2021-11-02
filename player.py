@@ -6,32 +6,32 @@ EAST=2
 WEST=3
 V=4
 
-potions =   {
-                "Biere dephilosophale": 0,
-                "Huile": 1,
-                "Cire d'abeille": 2,
+directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+
+potions_ids =   {
+                "Huile": 0,
+                "Cire d'abeille": 1,
+                "Hydrophobie": 2,
                 "Red Bull": 3,
                 "Vodka": 4,
-                "Essence": 5,
-                "Nitroglycerine": 6,
-                "Eau Benite": 7,
-                "Eau de Galadriel": 8,
-                "Hydrophobie": 9,
-                "Potion de levitation": 10,
-                "Solution d'Eau De Feu": 11,
-                "Breuvage phosphorescent": 12,
-                "Potion de Nuage": 13,
-                "Potion d'Uranium": 14,
-                "Gelee Royale": 15,
-                "Napalm": 16,
-                "Lotion d'Ange": 17,
-                "Larmes d'Ange": 18,
-                "Hydromel": 19,
-                "Poudre d'Ange": 20,
-                "Melange douteux": 21,
+                "Potion De Levitation": 5,
+                "Essence": 6,
+                "Nytroglycerine": 7,
+                "Solution d'Eau De Feu": 8,
+                "Eau Benite": 9,
+                "Eau De Galadriel": 10,
+                "Potion Phosphorescente": 11,
+                "Melange Douteux": 12,
+                "Gelee Royale": 13,
+                "Napalm": 14,
+                "Lotion D'ange": 15,
+                "Larmes D'ange": 16,
+                "Hydromel": 17,
+                "Poudre Blanche": 18,
+                "Potion De Nuage": 19,
+                "Potion D'uranium": 20,
+                "Biere De Dephilosophie": 21,
             }
-
-directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
 
 class   Hitbox:
     def __init__(self, pos_x, pos_y, width, height):
@@ -79,6 +79,14 @@ class   Player:
             self.right_walk.append(self.walk_ss.subsurface(x, res, res, res))
             self.left_walk.append(self.walk_ss.subsurface(x, res * 2, res, res))
             self.bot_walk.append(self.walk_ss.subsurface(x, res * 3, res, res))
+            x += res
+
+        x = 0
+        res = 64
+        self.potions_images = []
+        potion_image = pygame.image.load('resources/sprites/fioles.png')
+        for i in range(22):
+            self.potions_images.append(potion_image.subsurface(x, 0, res, res))
             x += res
 
     #def take_potion()

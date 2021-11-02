@@ -19,6 +19,7 @@ class Room:
         self.animations = []
         self.interactions = []
         self.wallboxes = []
+        self.potions = []
 
     def add_animation(self, sprites_path, nb_frames, x, y):
         if x < 0 or x > screen_width or y < 0 or y > screen_height:
@@ -48,7 +49,24 @@ class Room:
     def add_interaction(self, text, key, hitbox, proc):
         self.interactions.append((text, key, hitbox, proc))
 
-    #def add_wallbox():
+    def add_potions(self, goal_id, nb_rand_potions=3):
+        goal_potion = (goal_id, (0, 640))
+        self.potions.append(goal_potion)
+
+        for i in range(nb_rand_potions):
+
+            potion_id = 2
+            while potion_id in (2, 5, 8, 11):
+                potion_id = randrange(11)
+
+            x = randrange(21)
+            y = randrange(16)
+            while self.maze[y][x] == 0:
+                x = randrange(21)
+                y = randrange(16)
+
+            potion = (potion_id, (x * 48, y * 48))
+            self.potions.append(potion)
 
     def make_maze(self, w, h, sprite_path, pos_x, pos_y):
 
@@ -163,6 +181,9 @@ class Room:
             if anim['index'] >= anim['nb_frames']:
                 anim['index'] = 0
 
+        # potions
+        for potion in self.potions:
+            screen.blit(player.potions_images[potion[0]], potion[1])
         # player
         img, dims = player.walk(keys, self)
 

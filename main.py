@@ -19,9 +19,9 @@ player = Player(x=646, y=450, direction=WEST)
 rooms = {
             'spawner': Room('resources/sprites/tiles/spawner_ground_tile.png'),
             'blue': Room('resources/sprites/tiles/blue_ground_tile.png'),
-            'green': Room('resources/sprites/tiles/blue_ground_tile.png'),
+            'green': Room('resources/sprites/tiles/green_ground_tile.png'),
             'red': Room('resources/sprites/tiles/red_ground_tile.png'),
-            'purple': Room('resources/sprites/tiles/blue_ground_tile.png'),
+            'purple': Room('resources/sprites/tiles/purple_ground_tile.png'),
         }
 
 ############################ SPAWNER ROOM #############################
@@ -72,6 +72,7 @@ rooms[room].add_wallbox(1210, 390, 72, 142)
 rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].add_potions(potions_ids["Cire d'abeille"], 3)
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
@@ -80,7 +81,7 @@ rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
 ############################ GREEN ROOM #############################
 room = 'green'
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/green_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/panoramix.png', 1180, 430)
 rooms[room].add_wallbox(1190, 440, 72, 96)
 rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 550)
@@ -94,7 +95,7 @@ rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
 ############################ GREEN ROOM #############################
 room = 'red'
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/red_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/tortue_geniale.png', 1210, 470)
 rooms[room].add_wallbox(1210, 470, 56, 96)
 rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 550)
@@ -108,7 +109,7 @@ rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
 ############################ GREEN ROOM #############################
 room = 'purple'
-rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/purple_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/gandalf.png', 1180, 450)
 rooms[room].add_wallbox(1200, 450, 96, 128)
 rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 550)
@@ -302,7 +303,8 @@ def run():
     running = True
     while running:
         events = pygame.event.get()
-        handle_keys(events)
+        if potions_hook == False and bench_hook == False:
+            handle_keys(events)
 
         rooms[room].run(screen, player, events, keys)
 
