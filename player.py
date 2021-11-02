@@ -65,7 +65,8 @@ class   Player:
         self.y = y
         self.load_sprites()
         self.hitbox = Hitbox(x, y, width=32, height=32)
-        self.inventory = []
+        self.inventory = [0 for x in range(20)]
+        self.inventory_case_img = pygame.image.load('resources/sprites/inventory_case.png')
 
     def load_sprites(self):
         self.top_walk, self.bot_walk, self.right_walk, self.left_walk = [], [], [], []

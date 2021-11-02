@@ -20,7 +20,7 @@ rooms = {
             'spawner': Room('resources/sprites/tiles/spawner_ground_tile.png'),
             'blue': Room('resources/sprites/tiles/blue_ground_tile.png'),
             'green': Room('resources/sprites/tiles/blue_ground_tile.png'),
-            'red': Room('resources/sprites/tiles/blue_ground_tile.png'),
+            'red': Room('resources/sprites/tiles/red_ground_tile.png'),
             'purple': Room('resources/sprites/tiles/blue_ground_tile.png'),
         }
 
@@ -39,7 +39,7 @@ rooms[room].add_sprite('resources/sprites/bench/bench.png', 680, 280)
 rooms[room].add_wallbox(690, 280, 86, 64)
 
 
-rooms[room].add_sprite('resources/sprites/halloween/bones.png', 100, 10)
+rooms[room].add_sprite('resources/sprites/halloween/bones.png', 100, 200)
 rooms[room].add_sprite('resources/sprites/halloween/eye.png', 620, 200)
 
 rooms[room].add_sprite('resources/sprites/halloween/column.png', 350, 100)
@@ -311,7 +311,7 @@ def run():
             open_bench()
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(40)
 
     # Done! Time to quit.
     pygame.quit()

@@ -168,3 +168,8 @@ class Room:
 
         screen.blit(img, dims)
 
+        x = 0
+        for i in player.inventory:
+            if i != 0:
+                screen.blit(player.inventory_case_img, (x, 660))
+            x += 64
