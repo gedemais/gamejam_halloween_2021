@@ -1,0 +1,23 @@
+1: vide
+2: huile
+3: cire d'abeille
+4: potion d'hydrophobie
+5: Red Bull
+6: Vodka
+7: Potion de levitation
+8: Essence
+9: Nitroglycerine
+10: Potion de feu
+11: Eau benite
+12: Eau de Galadriel
+13: Potion de phosphorescence
+14: Melange douteux (fait flasher la tete du telebubies fonsde pendant 5s)
+15: Gelee royale (cire d'abeille + eau de galadriel)
+16: Napalm (Essence + Huile)
+17: Lotion d'ange (Red Bull + Eau benite)
+18: Larme d'ange (Eau benite + Nitroglycerine)
+19: Hydromel (Vodka + Cire d'abeille)
+20: Poudre d'ange (Larme d'ange + Lotion d'ange)
+21: Potion de nuage (Potion hydrophobe + Potion de levitation)
+22: Potion d'uranium (Potion de feu + Potion de phosphorescence)
+23: Biere desophilosophale
