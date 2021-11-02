@@ -54,6 +54,29 @@ rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
 rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 
+############################ GREEN ROOM #############################
+room = 'green'
+rooms[room].add_sprite('resources/sprites/PNJ/panoramix.png', 1180, 430)
+rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 550)
+rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
+rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
+
+############################ GREEN ROOM #############################
+room = 'red'
+rooms[room].add_sprite('resources/sprites/PNJ/tortue_geniale.png', 1210, 470)
+rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 550)
+rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
+rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
+
+############################ GREEN ROOM #############################
+room = 'purple'
+rooms[room].add_sprite('resources/sprites/PNJ/gandalf.png', 1180, 450)
+rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 550)
+rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
+rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 
 room = 'spawner'
 
@@ -121,6 +144,31 @@ rooms['spawner'].add_interaction(   "Appuyez sur E pour voyager...",
                                     pygame.K_e,
                                     Hitbox(1200, 530, 72, 80),
                                     toggle_purple_portal_hook)
+
+
+def toggle_spawner_portal_hook():
+    global room
+    global player
+    spawns =    {
+                    "blue" : (1100, 50),
+                    "green" : (1100, 200),
+                    "red" : (1100, 350),
+                    "purple" : (1100, 500)
+                }
+    player.x = spawns[room][0]
+    player.y = spawns[room][1]
+    room = 'spawner'
+    player.direction = NORTH
+
+interaction = ( "Appuyez sur E pour voyager...",
+                pygame.K_e,
+                Hitbox(1200, 570, 72, 100),
+                toggle_spawner_portal_hook)
+
+rooms['blue'].add_interaction(*interaction)
+rooms['green'].add_interaction(*interaction)
+rooms['red'].add_interaction(*interaction)
+rooms['purple'].add_interaction(*interaction)
 
 ##################
 
@@ -195,9 +243,9 @@ def run():
         player.hitbox.update_box(player.x + 32, player.y + 64)
         color = (255, 255, 255)
         pygame.draw.rect(screen, color, pygame.Rect(player.hitbox.x, player.hitbox.y, 32, 32))
-        for interaction in rooms[room].interactions:
-            hitbox = interaction[2]
-            pygame.draw.rect(screen, color, pygame.Rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height))
+        #for interaction in rooms[room].interactions:
+        #    hitbox = interaction[2]
+        #    pygame.draw.rect(screen, color, pygame.Rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height))
 
         img, dims = player.walk(keys)
 
