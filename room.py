@@ -59,12 +59,17 @@ class Room:
             while potion_id in (2, 5, 8, 11):
                 potion_id = randrange(11)
 
-            x = randrange(21)
-            y = randrange(16)
-            while self.maze[y][x] == 0:
-                x = randrange(21)
-                y = randrange(16)
+            for line in self.maze:
+                print(line)
 
+            x = randrange(1, 21)
+            y = randrange(1, 16)
+            if self.maze[y][x] == 0:
+                x = randrange(1, 21)
+                y = randrange(1, 16)
+
+
+            print(x, y)
             potion = (potion_id, (x * 48, y * 48))
             self.potions.append(potion)
 

@@ -274,26 +274,28 @@ def handle_keys(events):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 exit(0)
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
-                keys[NORTH] = True
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                keys[SOUTH] = True
-            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                keys[WEST] = True
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                keys[EAST] = True
+            if potions_hook == False and bench_hook == False:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    keys[NORTH] = True
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    keys[SOUTH] = True
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    keys[WEST] = True
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    keys[EAST] = True
             if event.key == pygame.K_v:
                 v = True
 
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP or event.key == pygame.K_w:
-                keys[NORTH] = False
-            if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-                keys[SOUTH] = False
-            if event.key == pygame.K_LEFT or event.key == pygame.K_a:
-                keys[WEST] = False
-            if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
-                keys[EAST] = False
+            if potions_hook == False and bench_hook == False:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                    keys[NORTH] = False
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                    keys[SOUTH] = False
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                    keys[WEST] = False
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                    keys[EAST] = False
             if event.key == pygame.K_v:
                 v = False
 
@@ -303,8 +305,7 @@ def run():
     running = True
     while running:
         events = pygame.event.get()
-        if potions_hook == False and bench_hook == False:
-            handle_keys(events)
+        handle_keys(events)
 
         rooms[room].run(screen, player, events, keys)
 
