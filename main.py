@@ -1,5 +1,6 @@
 import pygame
 from player import *
+from pnj import *
 from room import Room
 from os import system
 from time import sleep
@@ -76,7 +77,7 @@ rooms[room].potions.append((2, (600, 440)))
 rooms[room].potions.append((5, (600, 440)))
 rooms[room].potions.append((8, (600, 440)))
 rooms[room].potions.append((11, (600, 440)))
-rooms[room].potions.append((20, (600, 440)))
+rooms[room].potions.append((21, (600, 440)))
 
 
 # Portals
@@ -238,6 +239,10 @@ rooms['spawner'].add_interaction(   "Appuyez sur E pour voyager...",
                                     Hitbox(1200, 530, 72, 80),
                                     toggle_purple_portal_hook)
 
+#rooms['spawner'].add_interaction(   "Appuyez sur E pour parler",
+#                                    pygame.K_e,
+#                                    Hitbox(560, 436, 96, 96),
+#                                    toggle_dialogue_dumbledore)
 
 def toggle_spawner_portal_hook():
     global room
@@ -262,6 +267,8 @@ rooms['blue'].add_interaction(*interaction)
 rooms['green'].add_interaction(*interaction)
 rooms['red'].add_interaction(*interaction)
 rooms['purple'].add_interaction(*interaction)
+
+
 
 ##################
 
@@ -469,6 +476,36 @@ def handle_keys(events):
                 player.handled = nb_potions
 
 
+def ending(screen):
+
+
+    creditentials = [
+                pygame.image.load('resources/sprites/credits/a.png'),
+                pygame.image.load('resources/sprites/credits/b.png'),
+                pygame.image.load('resources/sprites/credits/c.png'),
+                pygame.image.load('resources/sprites/credits/d.png'),
+                pygame.image.load('resources/sprites/credits/e.png')
+            ]
+
+    z = 0
+    while z <= 4:
+        screen.blit(creditentials[z], (0, 0))
+        pygame.display.update()
+
+        time = 5000 if z < 2 else 2000
+
+        if z == 2:
+            time = 0
+            system("osascript -e \"set Volume 10\"")
+            system("afplay resources/sounds/psht.mp3")
+
+        pygame.time.wait(time)
+        z += 1
+
+    system("afplay resources/sounds/Chocolat.mp3")
+    pygame.quit()
+
+
 def run():
     global events
     running = True
@@ -495,6 +532,9 @@ def run():
 
         if player.sip_potion(screen, events):
             s = 2
+
+        if player.state == STATE_WIN:
+            ending(screen)
 
         pygame.display.update()
         clock.tick(40)
