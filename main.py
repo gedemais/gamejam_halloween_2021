@@ -34,6 +34,14 @@ tlbs = [
             pygame.image.load('resources/sprites/teletubbies/e.png')
         ]
 
+pnjs =  {
+            "dumbledore" : PNJ('spawner', Dialogue1, Dialogue6),
+            "poseidon" : PNJ('blue', Dialogue2, Dialogue7),
+            "panoramix" : PNJ('green', Dialogue3, Dialogue8),
+            "tortue_genial" : PNJ('red', Dialogue4, Dialogue9),
+            "gandalf" : PNJ('purple', Dialogue5, Dialogue10),
+        }
+
 ############################ SPAWNER ROOM #############################
 room = 'spawner'
 rooms[room].add_sprite('resources/sprites/PNJ/dumbledore.png', 560, 436)
@@ -80,6 +88,46 @@ rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 200)
 rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 350)
 rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 500)
 
+dialogue_dumbledore_on = False
+dialogue_dumbledore_step = 0
+
+def dialogue_dumbledore(screen, player, events):
+    global dialogue_dumbledore_step
+    global dialogue_dumbledore_on
+    if pnjs['dumbledore'].talk == False:
+        dialogue = pnjs['dumbledore'].dialogue_start
+    else:
+        dialogue = pnjs['dumbledore'].dialogue_loop
+
+    if dialogue_dumbledore_step == len(dialogue):
+        dialogue_dumbledore_step = 0
+        dialogue_dumbledore_on = False
+        pnjs['dumbledore'].talk = True
+        return
+
+    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, 370, 1280, 40))
+    color = (100, 100, 100) if dialogue[dialogue_dumbledore_step][1] != 0 else (0, 0, 0)
+    font = pygame.font.Font('resources/fonts/dialogue.otf', 20)
+    text_surface = font.render(dialogue[dialogue_dumbledore_step][0], True, color)
+    pos = (620, 400)
+    text_rect = text_surface.get_rect(midbottom=pos)
+    screen.blit(text_surface, text_rect)
+
+    for event in events:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            dialogue_dumbledore_step += 1
+    
+
+def toggle_dialogue_dumbledore():
+    global dialogue_dumbledore_on
+
+    dialogue_dumbledore_on = True if dialogue_dumbledore_on == False else False
+
+
+rooms[room].add_interaction(   "Appuyez sur E pour parler",
+                                    pygame.K_e,
+                                    Hitbox(560, 436, 96, 96),
+                                    toggle_dialogue_dumbledore)
 
 ############################ BLUE ROOM #############################
 room = 'blue'
@@ -101,6 +149,48 @@ rooms[room].add_wallbox(-10, -10, 10, 740)
 rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
+
+dialogue_poseidon_on = False
+dialogue_poseidon_step = 0
+
+def dialogue_poseidon(screen, player, events):
+    global dialogue_poseidon_step
+    global dialogue_poseidon_on
+    if pnjs['poseidon'].talk == False:
+        dialogue = pnjs['poseidon'].dialogue_start
+    else:
+        dialogue = pnjs['poseidon'].dialogue_loop
+
+    if dialogue_poseidon_step == len(dialogue):
+        dialogue_poseidon_step = 0
+        dialogue_poseidon_on = False
+        pnjs['poseidon'].talk = True
+        return
+
+    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, 370, 1280, 40))
+    color = (0, 0, 255) if dialogue[dialogue_poseidon_step][1] != 0 else (0, 0, 0)
+    font = pygame.font.Font('resources/fonts/dialogue.otf', 20)
+    text_surface = font.render(dialogue[dialogue_poseidon_step][0], True, color)
+    pos = (620, 400)
+    text_rect = text_surface.get_rect(midbottom=pos)
+    screen.blit(text_surface, text_rect)
+
+    for event in events:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            dialogue_poseidon_step += 1
+    
+
+def toggle_dialogue_poseidon():
+    global dialogue_poseidon_on
+
+    dialogue_poseidon_on = True if dialogue_poseidon_on == False else False
+
+
+rooms[room].add_interaction(   "Appuyez sur E pour parler",
+                                    pygame.K_e,
+                                    Hitbox(1200, 380, 96, 150),
+                                    toggle_dialogue_poseidon)
+
 ############################ GREEN ROOM #############################
 room = 'green'
 rooms[room].make_maze(7, 8, 'resources/sprites/tiles/green_maze_tile.png', 48, 0)
@@ -120,6 +210,48 @@ rooms[room].add_wallbox(-10, -10, 10, 740)
 rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
+
+dialogue_panoramix_on = False
+dialogue_panoramix_step = 0
+
+def dialogue_panoramix(screen, player, events):
+    global dialogue_panoramix_step
+    global dialogue_panoramix_on
+    if pnjs['panoramix'].talk == False:
+        dialogue = pnjs['panoramix'].dialogue_start
+    else:
+        dialogue = pnjs['panoramix'].dialogue_loop
+
+    if dialogue_panoramix_step == len(dialogue):
+        dialogue_panoramix_step = 0
+        dialogue_panoramix_on = False
+        pnjs['panoramix'].talk = True
+        return
+
+    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, 370, 1280, 40))
+    color = (0, 255, 0) if dialogue[dialogue_panoramix_step][1] != 0 else (0, 0, 0)
+    font = pygame.font.Font('resources/fonts/dialogue.otf', 20)
+    text_surface = font.render(dialogue[dialogue_panoramix_step][0], True, color)
+    pos = (620, 400)
+    text_rect = text_surface.get_rect(midbottom=pos)
+    screen.blit(text_surface, text_rect)
+
+    for event in events:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            dialogue_panoramix_step += 1
+    
+
+def toggle_dialogue_panoramix():
+    global dialogue_panoramix_on
+
+    dialogue_panoramix_on = True if dialogue_panoramix_on == False else False
+
+
+rooms[room].add_interaction(   "Appuyez sur E pour parler",
+                                    pygame.K_e,
+                                    Hitbox(1180, 430, 96, 96),
+                                    toggle_dialogue_panoramix)
+
 ############################ RED ROOM #############################
 room = 'red'
 rooms[room].make_maze(7, 8, 'resources/sprites/tiles/red_maze_tile.png', 48, 0)
@@ -138,6 +270,48 @@ rooms[room].add_wallbox(-10, -10, 10, 740)
 rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
+
+dialogue_tortue_genial_on = False
+dialogue_tortue_genial_step = 0
+
+def dialogue_tortue_genial(screen, player, events):
+    global dialogue_tortue_genial_step
+    global dialogue_tortue_genial_on
+    if pnjs['tortue_genial'].talk == False:
+        dialogue = pnjs['tortue_genial'].dialogue_start
+    else:
+        dialogue = pnjs['tortue_genial'].dialogue_loop
+
+    if dialogue_tortue_genial_step == len(dialogue):
+        dialogue_tortue_genial_step = 0
+        dialogue_tortue_genial_on = False
+        pnjs['tortue_genial'].talk = True
+        return
+
+    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, 370, 1280, 40))
+    color = (255, 0, 0) if dialogue[dialogue_tortue_genial_step][1] != 0 else (0, 0, 0)
+    font = pygame.font.Font('resources/fonts/dialogue.otf', 20)
+    text_surface = font.render(dialogue[dialogue_tortue_genial_step][0], True, color)
+    pos = (620, 400)
+    text_rect = text_surface.get_rect(midbottom=pos)
+    screen.blit(text_surface, text_rect)
+
+    for event in events:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            dialogue_tortue_genial_step += 1
+    
+
+def toggle_dialogue_tortue_genial():
+    global dialogue_tortue_genial_on
+
+    dialogue_tortue_genial_on = True if dialogue_tortue_genial_on == False else False
+
+
+rooms[room].add_interaction(   "Appuyez sur E pour parler",
+                                    pygame.K_e,
+                                    Hitbox(1180, 430, 96, 96),
+                                    toggle_dialogue_tortue_genial)
+
 ############################ PURPLE ROOM #############################
 room = 'purple'
 rooms[room].make_maze(7, 8, 'resources/sprites/tiles/purple_maze_tile.png', 48, 0)
@@ -165,6 +339,48 @@ rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
 
+dialogue_gandalf_on = False
+dialogue_gandalf_step = 0
+
+def dialogue_gandalf(screen, player, events):
+    global dialogue_gandalf_step
+    global dialogue_gandalf_on
+    if pnjs['gandalf'].talk == False:
+        dialogue = pnjs['gandalf'].dialogue_start
+    else:
+        dialogue = pnjs['gandalf'].dialogue_loop
+
+    if dialogue_gandalf_step == len(dialogue):
+        dialogue_gandalf_step = 0
+        dialogue_gandalf_on = False
+        pnjs['gandalf'].talk = True
+        return
+
+    pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(0, 370, 1280, 40))
+    color = (100, 100, 100) if dialogue[dialogue_gandalf_step][1] != 0 else (0, 0, 0)
+    font = pygame.font.Font('resources/fonts/dialogue.otf', 20)
+    text_surface = font.render(dialogue[dialogue_gandalf_step][0], True, color)
+    pos = (620, 400)
+    text_rect = text_surface.get_rect(midbottom=pos)
+    screen.blit(text_surface, text_rect)
+
+    for event in events:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            dialogue_gandalf_step += 1
+    
+
+def toggle_dialogue_gandalf():
+    global dialogue_gandalf_on
+
+    dialogue_gandalf_on = True if dialogue_gandalf_on == False else False
+
+
+rooms[room].add_interaction(   "Appuyez sur E pour parler",
+                                    pygame.K_e,
+                                    Hitbox(1180, 450, 96, 96),
+                                    toggle_dialogue_gandalf)
+
+################################################################################
 room = 'spawner'
 
 keys = [False, False, False, False]
@@ -233,18 +449,6 @@ rooms['spawner'].add_interaction(   "Appuyez sur E pour voyager...",
                                     Hitbox(1200, 530, 72, 80),
                                     toggle_purple_portal_hook)
 
-#dialogue_dumbledore = False
-#
-#def toggle_dialogue_dumbledore():
-#    global dialogue_dumbledore
-#
-#    dialogue_dumbledore = True if dialogue_dumbledore == False else False
-#
-#
-#rooms['spawner'].add_interaction(   "Appuyez sur E pour parler",
-#                                    pygame.K_e,
-#                                    Hitbox(560, 436, 96, 96),
-#                                    toggle_dialogue_dumbledore)
 
 def toggle_spawner_portal_hook():
     global room
@@ -534,6 +738,17 @@ def run():
 
         if player.sip_potion(screen, events):
             s = 2
+
+        if dialogue_dumbledore_on:
+            dialogue_dumbledore(screen, player, events)
+        elif dialogue_poseidon_on:
+            dialogue_poseidon(screen, player, events)
+        elif dialogue_panoramix_on:
+            dialogue_panoramix(screen, player, events)
+        elif dialogue_tortue_genial_on:
+            dialogue_tortue_genial(screen, player, events)
+        elif dialogue_gandalf_on:
+            dialogue_gandalf(screen, player, events)
 
         if player.state == STATE_WIN:
             ending(screen)
