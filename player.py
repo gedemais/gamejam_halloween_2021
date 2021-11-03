@@ -8,6 +8,39 @@ V=4
 
 directions = [(0, -1), (0, 1), (1, 0), (-1, 0)]
 
+STATE_NONE=-1
+STATE_HYDROPHOBE=0
+STATE_LEVITATION=1
+STATE_ARDENT=2
+STATE_PHOSPHORESCENT=3
+STATE_TELETUBBIES=4
+STATE_WIN=5
+
+potions_drink = [
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("On dirait que je repousse l'eau... Ou serait-ce l'eau qui me repousse ?!", True, STATE_HYDROPHOBE ),
+                    ("Rafraichissant !", False, STATE_NONE),
+                    ("Ca fait du bien la ou ca passe.", False, STATE_NONE),
+                    ("Je me sens si leger d'un coup...", True, STATE_LEVITATION),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Ardent comme le soleil, et chaud comme la braise !", True, STATE_ARDENT),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Aaargh... mes yeux... tout est si lumineux...", True, STATE_PHOSPHORESCENT),
+                    ("Shit bruh...", True, STATE_TELETUBBIES),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Snif... Snif...", False, STATE_NONE),
+                    ("Cette piquette est fort mieilleuse !", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
+                    ("Une biere qui se respire ? Voyons voir...", True, STATE_WIN)
+                ]
+
 potions_ids =   {
                 "Huile": 0,
                 "Cire d'abeille": 1,
@@ -39,6 +72,7 @@ class   Hitbox:
         self.y = pos_y
         self.width = width
         self.height = height
+        self.state = -1
 
     def update_box(self, new_x, new_y):
         self.x = new_x
@@ -91,6 +125,25 @@ class   Player:
             x += res
 
         self.handled_image = pygame.image.load('resources/sprites/selected.png')
+
+    def sip_potion(self, screen, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_b:
+                    print("THERE")
+                    if len(self.inventory) == 0:
+                        return
+                    potion = potions_drink[self.inventory[self.handled]]
+                    print(potion)
+                    font = pygame.font.Font('resources/fonts/dpcomic.ttf', 16)
+                    text_surface = font.render(potion[0], True, (255, 255, 255))
+                    pos = (self.x, self.y)
+                    text_rect = text_surface.get_rect(midbottom=pos)
+                    screen.blit(text_surface, text_rect)
+                    if potion[1]: # is drinkable
+                        player.state = potion[2]
+                    return True
+        return False
 
     def take_potion(self, potions):
         for i, potion in enumerate(potions):

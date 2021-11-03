@@ -2,6 +2,7 @@ import pygame
 from player import *
 from room import Room
 from os import system
+from time import sleep
 
 #########################
 pygame.init()
@@ -323,6 +324,8 @@ def run():
     global events
     running = True
     while running:
+        s = 0
+
         events = pygame.event.get()
         handle_keys(events)
 
@@ -332,8 +335,12 @@ def run():
             open_potions()
             open_bench()
 
+        if player.sip_potion(screen, events):
+            s = 1
+
         pygame.display.update()
         clock.tick(40)
+        sleep(s)
 
     # Done! Time to quit.
     pygame.quit()
