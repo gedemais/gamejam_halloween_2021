@@ -331,7 +331,7 @@ rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1103, 390)
 rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1196, 390)
 rooms[room].add_obstacle(1106, 390, STATE_ARDENT)
 
-rooms[room].add_potions(potions_ids["Eau Benite"], 2)
+rooms[room].add_potions(potions_ids["Melange Douteux"], 2)
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
