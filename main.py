@@ -72,12 +72,6 @@ rooms[room].potions.append((1, (865, 280)))
 rooms[room].potions.append((3, (365, 625)))
 rooms[room].potions.append((6, (865, 625)))
 rooms[room].potions.append((9, (600, 340)))
-rooms[room].potions.append((12, (600, 440)))
-rooms[room].potions.append((2, (600, 440)))
-rooms[room].potions.append((5, (600, 440)))
-rooms[room].potions.append((8, (600, 440)))
-rooms[room].potions.append((11, (600, 440)))
-rooms[room].potions.append((21, (600, 440)))
 
 
 # Portals
@@ -239,6 +233,14 @@ rooms['spawner'].add_interaction(   "Appuyez sur E pour voyager...",
                                     Hitbox(1200, 530, 72, 80),
                                     toggle_purple_portal_hook)
 
+#dialogue_dumbledore = False
+#
+#def toggle_dialogue_dumbledore():
+#    global dialogue_dumbledore
+#
+#    dialogue_dumbledore = True if dialogue_dumbledore == False else False
+#
+#
 #rooms['spawner'].add_interaction(   "Appuyez sur E pour parler",
 #                                    pygame.K_e,
 #                                    Hitbox(560, 436, 96, 96),
@@ -349,6 +351,7 @@ def mixer(player, key):
     elif key == pygame.K_5:
         found = False
         for index, comb in enumerate(potions_tree):
+            comb = (comb[1], comb[2])
             if comb.count(mixer_in[0]) == 1 and comb.count(mixer_in[1]) == 1:
                 mixer_out = index
                 found = True
@@ -379,7 +382,6 @@ def open_bench(player, events):
         return
     screen.blit(bench, (100, 16))
 
-    print(error_time)
     if error_time > 0:
         error_time -= 1
 
