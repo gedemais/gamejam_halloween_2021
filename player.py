@@ -73,7 +73,7 @@ potions_ids =   {
                 "Poudre Blanche": 18,
                 "Potion De Nuage": 19,
                 "Potion D'uranium": 20,
-                "Biere De Dephilosophie": 21,
+                "Biere Dephilosophale": 21,
             }
 
 potions_names =   {
@@ -98,8 +98,33 @@ potions_names =   {
                 "18": "Poudre Blanche",
                 "19": "Potion De Nuage",
                 "20": "Potion D'uranium",
-                "21": "Biere De Dephilosophie"
+                "21": "Biere Dephilosophale"
             }
+
+potions_tree =    [
+                            (False, -1, -1),
+                            (False, -1, -1),
+                            (True, 0, 1),
+                            (False, -1, -1),
+                            (False, -1, -1),
+                            (True, 3, 4),
+                            (False, -1, -1),
+                            (False, -1, -1),
+                            (True, 6, 7),
+                            (False, -1, -1),
+                            (False, -1, -1),
+                            (True, 9, 10),
+                            (True, 0, 20),
+                            (True, 1, 10),
+                            (True, 0, 6),
+                            (True, 3, 9),
+                            (True, 7, 9),
+                            (True, 1, 4),
+                            (True, 15, 16),
+                            (True, 2, 5),
+                            (True, 8, 11),
+                            (True, 19, 20),
+                        ]
 
 
 class   Hitbox:

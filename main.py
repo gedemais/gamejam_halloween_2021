@@ -76,6 +76,7 @@ rooms[room].potions.append((2, (600, 440)))
 rooms[room].potions.append((5, (600, 440)))
 rooms[room].potions.append((8, (600, 440)))
 rooms[room].potions.append((11, (600, 440)))
+rooms[room].potions.append((20, (600, 440)))
 
 
 # Portals
@@ -292,14 +293,126 @@ bench = pygame.image.load('resources/sprites/bench/background.png')
 
 bench_hook = False
 
+alambic_in = -1
+alambic_out = []
+mixer_in = []
+mixer_out = -1
+
+error_time = 0
+
+
 def toggle_bench_hook():
     global bench_hook
+    global alambic_in
+    global alambic_out
+    global mixer_in
+    global mixer_out
+
+    alambic_in = -1
+    alambic_out = []
+    mixer_in = [-1, -1]
+    mixer_out = -1
+    
     bench_hook = False if bench_hook == True else True
 
-def open_bench():
+
+def alambic(player):
+    global alambic_in
+    global alambic_out
+    global error_time
+
+    if potions_tree[player.inventory[player.handled]][0]:
+        alambic_in = player.inventory[player.handled]
+    else:
+        error_time = 60
+        return
+
+    if alambic_in > -1:
+        alambic_out = [potions_tree[alambic_in][1], potions_tree[alambic_in][2]]
+
+def mixer(player, key):
+    global mixer_in
+    global mixer_out
+    global error_time
+
+    if key == pygame.K_2:
+        mixer_in[0] = player.inventory[player.handled]
+    elif key == pygame.K_3:
+        mixer_in[1] = player.inventory[player.handled]
+    elif key == pygame.K_5:
+        found = False
+        for index, comb in enumerate(potions_tree):
+            if comb.count(mixer_in[0]) == 1 and comb.count(mixer_in[1]) == 1:
+                mixer_out = index
+                found = True
+                break
+        if not found:
+            error_time = 60
+            return
+        player.inventory.remove(mixer_in[0])
+        player.inventory.remove(mixer_in[1])
+        for j, c in enumerate(player.inventory):
+            if c == -1:
+                player.inventory[j] = mixer_out
+                mixer_in = [-1, -1]
+                mixer_out = -1
+                break
+
+
+
+
+def open_bench(player, events):
+    global alambic_in
+    global alambic_out
+    global mixer_in
+    global mixer_out
+    global error_time
+
     if bench_hook == False:
         return
-    screen.blit(bench, (100, 48))
+    screen.blit(bench, (100, 16))
+
+    print(error_time)
+    if error_time > 0:
+        error_time -= 1
+
+        font = pygame.font.Font('resources/fonts/dpcomic.ttf', 32)
+        text_surface = font.render("Liquide non distillable / Melange impossible ...", True, (255, 0, 0))
+        pos = (620, 400)
+        text_rect = text_surface.get_rect(midbottom=pos)
+        screen.blit(text_surface, text_rect)
+
+    for event in events:
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_1:
+                alambic(player)
+            elif event.key == pygame.K_4:
+                player.inventory.remove(alambic_in)
+                for i in range(2):
+                    for j, c in enumerate(player.inventory):
+                        if c == -1:
+                            player.inventory[j] = alambic_out[i]
+                            break
+                alambic_in = -1
+                alambic_out = []
+            elif event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_5:
+                mixer(player, event.key)
+
+    if alambic_in > -1:
+        screen.blit(player.potions_images[alambic_in], (258, 90))
+    if len(alambic_out) > 0:
+        screen.blit(player.potions_images[alambic_out[0]], (157, 500))
+        screen.blit(player.potions_images[alambic_out[1]], (360, 500))
+
+    if mixer_out > -1:
+        screen.blit(player.potions_images[mixer_out], (877, 500))
+    if mixer_in[0] != -1:
+        screen.blit(player.potions_images[mixer_in[0]], (788, 90))
+    if mixer_in[1] != -1:
+        screen.blit(player.potions_images[mixer_in[1]], (965, 90))
+
+
+
 
 rooms['spawner'].add_interaction("Appuyez sur E pour experimenter",
                                 pygame.K_e,
@@ -370,7 +483,7 @@ def run():
 
         if room == 'spawner':
             open_potions()
-            open_bench()
+            open_bench(player, events)
 
         if player.state == STATE_TELETUBBIES:
             if i % 2 == 0:
