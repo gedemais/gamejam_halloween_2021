@@ -16,29 +16,39 @@ STATE_PHOSPHORESCENT=3
 STATE_TELETUBBIES=4
 STATE_WIN=5
 
+states_names =  [
+                    "Etat : Hydrophobe",
+                    "Etat : Levitation",
+                    "Etat : Ardent",
+                    "Etat : Phosphorescent",
+                    "Etat : Victoire"
+                ]
+
+state_time = 200
+
 potions_drink = [
                     ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
                     ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
-                    ("On dirait que je repousse l'eau... Ou serait-ce l'eau qui me repousse ?!", True, STATE_HYDROPHOBE, 200),
-                    ("Rafraichissant !", False, STATE_NONE),
-                    ("Ca fait du bien la ou ca passe.", False, STATE_NONE),
-                    ("Je me sens si leger d'un coup...", True, STATE_LEVITATION),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Ardent comme le soleil, et chaud comme la braise !", True, STATE_ARDENT),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Aaargh... mes yeux... tout est si lumineux...", True, STATE_PHOSPHORESCENT),
-                    ("Shit bruh...", True, STATE_TELETUBBIES),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Snif... Snif...", False, STATE_NONE),
-                    ("Cette piquette est fort mieilleuse !", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Une biere qui se respire ? Voyons voir...", True, STATE_WIN)
+                    ("On dirait que je repousse l'eau...", True, STATE_HYDROPHOBE, state_time),
+                    ("Rafraichissant !", False, STATE_NONE, 0),
+                    ("Ca fait du bien la ou ca passe.", False, STATE_NONE, 0),
+                    ("Je me sens si leger d'un coup...", True, STATE_LEVITATION, state_time),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Ardent comme le soleil, et chaud comme la braise !", True, STATE_ARDENT, state_time),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Aaargh... mes yeux... tout est si lumineux...", True, STATE_PHOSPHORESCENT, state_time),
+                    ("Shit bruh...", True, STATE_TELETUBBIES, 30),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Snif... Snif...", False, STATE_NONE, 0),
+                    ("Cette piquette est fort mieilleuse !", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Une biere qui se respire ? Voyons voir...", True, STATE_WIN, state_time)
                 ]
 
 potions_ids =   {
@@ -128,6 +138,7 @@ class   Player:
         self.inventory_case_img = pygame.image.load('resources/sprites/inventory_case.png')
         self.handled = 0
         self.state = -1
+        self.state_timer = 0
 
     def load_sprites(self):
         self.top_walk, self.bot_walk, self.right_walk, self.left_walk = [], [], [], []
@@ -166,6 +177,7 @@ class   Player:
                     screen.blit(text_surface, text_rect)
                     if potion[1]: # is drinkable
                         self.state = potion[2]
+                        self.state_timer = potion[3]
                     return True
         return False
 

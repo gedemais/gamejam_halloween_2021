@@ -13,13 +13,15 @@ screen_height = 720
  
 
 class Room:
-    def __init__(self, bg_tile_path):
+    def __init__(self, bg_tile_path, name):
         self.bg = pygame.image.load(bg_tile_path)
         self.sprites = []
         self.animations = []
         self.interactions = []
         self.wallboxes = []
         self.potions = []
+        self.obstacles = []
+        self.name = name
 
     def add_animation(self, sprites_path, nb_frames, x, y):
         if x < 0 or x > screen_width or y < 0 or y > screen_height:
@@ -43,6 +45,9 @@ class Room:
             self.sprites.append((img, x, y))
         else:
             self.sprites.append((pygame.image.load(sprite_path), x, y))
+
+    def add_obstacle(self, pos_x, pos_y, state_to_have, width=192, height=48):
+        self.obstacles.append((Hitbox(pos_x, pos_y, width, height), state_to_have))
 
     def add_wallbox(self, pos_x, pos_y, width, height):
         self.wallboxes.append(Hitbox(pos_x, pos_y, width, height))
@@ -147,16 +152,33 @@ class Room:
         del(self.maze)
 
     def run(self, screen, player, events, keys):
+        for obstacle in self.obstacles:
+            if player.hitbox.is_hit(obstacle[0]) == True and player.state != obstacle[1]:
+                player.x = 1100
+                player.y = 572
+                player.direction = NORTH
+
         player.take_potion(self.potions)
         self.draw(screen, player, keys)
         self.handle_interactions(screen, player, events)
 
+        if player.state_timer > 0:
+            player.state_timer -= 1
+            font = pygame.font.Font('resources/fonts/dpcomic.ttf', 24)
+            text_surface = font.render(states_names[player.state], True, (255, 255, 255))
+            pos = (100, 25)
+            text_rect = text_surface.get_rect(midbottom=pos)
+            screen.blit(text_surface, text_rect)
+        else:
+            player.state = STATE_NONE
+
+
     def handle_interactions(self, screen, player, events):
         for interaction in self.interactions:
             if player.hitbox.is_hit(interaction[2]):
-                font = pygame.font.Font('resources/fonts/dpcomic.ttf', 16)
+                font = pygame.font.Font('resources/fonts/dpcomic.ttf', 20)
                 text_surface = font.render(interaction[0], True, (255, 255, 255))
-                pos = (interaction[2].x, interaction[2].y)
+                pos = (interaction[2].x - 50, interaction[2].y)
                 text_rect = text_surface.get_rect(midbottom=pos)
                 screen.blit(text_surface, text_rect)
 
@@ -167,25 +189,29 @@ class Room:
                             interaction[3]()
 
     def draw(self, screen, player, keys):
-        # background
-        for x in range(0, screen_width, self.bg.get_width()):
-            for y in range(0, screen_height, self.bg.get_height()):
-                screen.blit(self.bg, (x, y))
+        if self.name != 'purple' or player.state == STATE_PHOSPHORESCENT:
+            # background
+            for x in range(0, screen_width, self.bg.get_width()):
+                for y in range(0, screen_height, self.bg.get_height()):
+                    screen.blit(self.bg, (x, y))
 
-        # sprites
-        for sprite in self.sprites:
-            screen.blit(sprite[0], (sprite[1], sprite[2]))
+            # sprites
+            for sprite in self.sprites:
+                screen.blit(sprite[0], (sprite[1], sprite[2]))
 
-        # animations
-        for anim in self.animations:
-            screen.blit(anim['frames'][anim['index']], anim['coords'])
-            anim['index'] += 1
-            if anim['index'] >= anim['nb_frames']:
-                anim['index'] = 0
+            # animations
+            for anim in self.animations:
+                screen.blit(anim['frames'][anim['index']], anim['coords'])
+                anim['index'] += 1
+                if anim['index'] >= anim['nb_frames']:
+                    anim['index'] = 0
 
-        # potions
-        for potion in self.potions:
-            screen.blit(player.potions_images[potion[0]], potion[1])
+            # potions
+            for potion in self.potions:
+                screen.blit(player.potions_images[potion[0]], potion[1])
+        else:
+            screen.fill((0, 0, 0))
+
         # player
         img, dims = player.walk(keys, self)
 
@@ -198,7 +224,7 @@ class Room:
                 if index == player.handled:
                     font = pygame.font.Font('resources/fonts/dpcomic.ttf', 20)
                     text_surface = font.render(potions_names[str(player.inventory[index])], True, (255, 255, 255))
-                    pos = (64, 640)
+                    pos = (128, 660)
                     text_rect = text_surface.get_rect(midbottom=pos)
                     screen.blit(text_surface, text_rect)
                     screen.blit(player.handled_image, (x, 660))

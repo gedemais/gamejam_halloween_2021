@@ -18,11 +18,11 @@ pygame.display.set_caption("Al'Chemist")
 player = Player(x=646, y=450, direction=WEST)
 
 rooms = {
-            'spawner': Room('resources/sprites/tiles/spawner_ground_tile.png'),
-            'blue': Room('resources/sprites/tiles/blue_ground_tile.png'),
-            'green': Room('resources/sprites/tiles/green_ground_tile.png'),
-            'red': Room('resources/sprites/tiles/red_ground_tile.png'),
-            'purple': Room('resources/sprites/tiles/purple_ground_tile.png'),
+            'spawner': Room('resources/sprites/tiles/spawner_ground_tile.png', 'spawner'),
+            'blue': Room('resources/sprites/tiles/blue_ground_tile.png', 'blue'),
+            'green': Room('resources/sprites/tiles/green_ground_tile.png', 'green'),
+            'red': Room('resources/sprites/tiles/red_ground_tile.png', 'red'),
+            'purple': Room('resources/sprites/tiles/purple_ground_tile.png', 'purple'),
         }
 
 tlbs = [
@@ -72,6 +72,10 @@ rooms[room].potions.append((3, (365, 625)))
 rooms[room].potions.append((6, (865, 625)))
 rooms[room].potions.append((9, (600, 340)))
 rooms[room].potions.append((12, (600, 440)))
+rooms[room].potions.append((2, (600, 440)))
+rooms[room].potions.append((5, (600, 440)))
+rooms[room].potions.append((8, (600, 440)))
+rooms[room].potions.append((11, (600, 440)))
 
 
 # Portals
@@ -91,7 +95,10 @@ rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
 
+rooms[room].add_obstacle(1106, 150, STATE_HYDROPHOBE)
+
 rooms[room].add_potions(potions_ids["Vodka"], 2)
+
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
@@ -108,6 +115,8 @@ rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1196, 150)
 
+rooms[room].add_obstacle(1106, 150, STATE_LEVITATION)
+
 rooms[room].add_potions(potions_ids["Nitroglycerine"], 2)
 
 # Walls
@@ -115,7 +124,7 @@ rooms[room].add_wallbox(-10, -10, 10, 740)
 rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
-############################ GREEN ROOM #############################
+############################ RED ROOM #############################
 room = 'red'
 rooms[room].make_maze(7, 8, 'resources/sprites/tiles/red_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/tortue_geniale.png', 1210, 470)
@@ -124,6 +133,7 @@ rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 550)
 
 rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1196, 150)
+rooms[room].add_obstacle(1106, 150, STATE_ARDENT)
 
 rooms[room].add_potions(potions_ids["Eau De Galadriel"], 2)
 
@@ -132,7 +142,7 @@ rooms[room].add_wallbox(-10, -10, 10, 740)
 rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
-############################ GREEN ROOM #############################
+############################ PURPLE ROOM #############################
 room = 'purple'
 rooms[room].make_maze(7, 8, 'resources/sprites/tiles/purple_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/gandalf.png', 1180, 450)
@@ -141,12 +151,15 @@ rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 550)
 
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].add_obstacle(1106, 150, STATE_HYDROPHOBE)
 
 rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1103, 270)
 rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1196, 270)
+rooms[room].add_obstacle(1106, 270, STATE_LEVITATION)
 
 rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1103, 390)
 rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1196, 390)
+rooms[room].add_obstacle(1106, 390, STATE_ARDENT)
 
 rooms[room].add_potions(potions_ids["Eau Benite"], 2)
 
@@ -165,7 +178,7 @@ v = False
 ############################# Interactions #########################
 
 
-########### portal
+########### portals
 
 def toggle_blue_portal_hook():
     global room
@@ -359,9 +372,6 @@ def run():
             open_potions()
             open_bench()
 
-        if player.sip_potion(screen, events):
-            s = 1
-
         if player.state == STATE_TELETUBBIES:
             if i % 2 == 0:
                 screen.blit(tlbs[int(i / 2)], (0, 0))
@@ -369,6 +379,9 @@ def run():
             if i == (len(tlbs) - 1) * 2:
                 i = 0
             s = 0.1
+
+        if player.sip_potion(screen, events):
+            s = 2
 
         pygame.display.update()
         clock.tick(40)
