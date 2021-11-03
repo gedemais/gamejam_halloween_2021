@@ -363,9 +363,10 @@ def run():
             s = 1
 
         if player.state == STATE_TELETUBBIES:
-            screen.blit(tlbs[i], (0, 0))
+            if i % 2 == 0:
+                screen.blit(tlbs[int(i / 2)], (0, 0))
             i += 1
-            if i == len(tlbs) - 1:
+            if i == (len(tlbs) - 1) * 2:
                 i = 0
             s = 0.1
 

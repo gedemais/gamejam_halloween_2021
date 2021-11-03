@@ -17,9 +17,9 @@ STATE_TELETUBBIES=4
 STATE_WIN=5
 
 potions_drink = [
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("Je ne devrais pas boire ca...", False, STATE_NONE),
-                    ("On dirait que je repousse l'eau... Ou serait-ce l'eau qui me repousse ?!", True, STATE_HYDROPHOBE ),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("Je ne devrais pas boire ca...", False, STATE_NONE, 0),
+                    ("On dirait que je repousse l'eau... Ou serait-ce l'eau qui me repousse ?!", True, STATE_HYDROPHOBE, 200),
                     ("Rafraichissant !", False, STATE_NONE),
                     ("Ca fait du bien la ou ca passe.", False, STATE_NONE),
                     ("Je me sens si leger d'un coup...", True, STATE_LEVITATION),
