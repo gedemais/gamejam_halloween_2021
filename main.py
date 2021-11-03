@@ -562,6 +562,8 @@ def mixer(player, key):
                 break
         if not found:
             error_time = 60
+            mixer_in = [-1, -1]
+            mixer_out = -1
             return
         player.inventory.remove(mixer_in[0])
         player.inventory.remove(mixer_in[1])
@@ -571,6 +573,8 @@ def mixer(player, key):
                 mixer_in = [-1, -1]
                 mixer_out = -1
                 break
+        mixer_in = [-1, -1]
+        mixer_out = -1
 
 
 
