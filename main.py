@@ -25,6 +25,14 @@ rooms = {
             'purple': Room('resources/sprites/tiles/purple_ground_tile.png'),
         }
 
+tlbs = [
+            pygame.image.load('resources/sprites/teletubbies/a.png'),
+            pygame.image.load('resources/sprites/teletubbies/b.png'),
+            pygame.image.load('resources/sprites/teletubbies/c.png'),
+            pygame.image.load('resources/sprites/teletubbies/d.png'),
+            pygame.image.load('resources/sprites/teletubbies/e.png')
+        ]
+
 ############################ SPAWNER ROOM #############################
 room = 'spawner'
 rooms[room].add_sprite('resources/sprites/PNJ/dumbledore.png', 560, 436)
@@ -63,6 +71,7 @@ rooms[room].potions.append((1, (865, 280)))
 rooms[room].potions.append((3, (365, 625)))
 rooms[room].potions.append((6, (865, 625)))
 rooms[room].potions.append((9, (600, 340)))
+rooms[room].potions.append((12, (600, 440)))
 
 
 # Portals
@@ -78,8 +87,10 @@ rooms[room].make_maze(7, 8, 'resources/sprites/tiles/blue_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/poseidon.png', 1200, 380)
 rooms[room].add_wallbox(1210, 390, 72, 142)
 rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 550)
+
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+
 rooms[room].add_potions(potions_ids["Vodka"], 2)
 
 # Walls
@@ -93,8 +104,10 @@ rooms[room].make_maze(7, 8, 'resources/sprites/tiles/green_maze_tile.png', 48, 0
 rooms[room].add_sprite('resources/sprites/PNJ/panoramix.png', 1180, 430)
 rooms[room].add_wallbox(1190, 440, 72, 96)
 rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 550)
-rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
-rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+
+rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1103, 150)
+rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1196, 150)
+
 rooms[room].add_potions(potions_ids["Nitroglycerine"], 2)
 
 # Walls
@@ -108,8 +121,10 @@ rooms[room].make_maze(7, 8, 'resources/sprites/tiles/red_maze_tile.png', 48, 0)
 rooms[room].add_sprite('resources/sprites/PNJ/tortue_geniale.png', 1210, 470)
 rooms[room].add_wallbox(1210, 470, 56, 96)
 rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 550)
-rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
-rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+
+rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1103, 150)
+rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1196, 150)
+
 rooms[room].add_potions(potions_ids["Eau De Galadriel"], 2)
 
 # Walls
@@ -123,8 +138,16 @@ rooms[room].make_maze(7, 8, 'resources/sprites/tiles/purple_maze_tile.png', 48, 
 rooms[room].add_sprite('resources/sprites/PNJ/gandalf.png', 1180, 450)
 rooms[room].add_wallbox(1200, 450, 96, 128)
 rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 550)
+
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+
+rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1103, 270)
+rooms[room].add_animation('resources/sprites/epreuves/anim_acide/', 5, 1196, 270)
+
+rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1103, 390)
+rooms[room].add_animation('resources/sprites/epreuves/anim_feu/', 5, 1196, 390)
+
 rooms[room].add_potions(potions_ids["Eau Benite"], 2)
 
 # Walls
@@ -323,6 +346,7 @@ def handle_keys(events):
 def run():
     global events
     running = True
+    i = 0
     while running:
         s = 0
 
@@ -337,6 +361,13 @@ def run():
 
         if player.sip_potion(screen, events):
             s = 1
+
+        if player.state == STATE_TELETUBBIES:
+            screen.blit(tlbs[i], (0, 0))
+            i += 1
+            if i == len(tlbs) - 1:
+                i = 0
+            s = 0.1
 
         pygame.display.update()
         clock.tick(40)

@@ -66,13 +66,38 @@ potions_ids =   {
                 "Biere De Dephilosophie": 21,
             }
 
+potions_names =   {
+                "0": "Huile",
+                "1": "Cire d'abeille",
+                "2": "Hydrophobie",
+                "3": "Red Bull",
+                "4": "Vodka",
+                "5": "Potion De Levitation",
+                "6": "Essence",
+                "7": "Nitroglycerine",
+                "8": "Solution d'Eau De Feu",
+                "9": "Eau Benite",
+                "10": "Eau De Galadriel",
+                "11": "Potion Phosphorescente",
+                "12": "Melange Douteux",
+                "13": "Gelee Royale",
+                "14": "Napalm",
+                "15": "Lotion D'ange",
+                "16": "Larmes D'ange",
+                "17": "Hydromel",
+                "18": "Poudre Blanche",
+                "19": "Potion De Nuage",
+                "20": "Potion D'uranium",
+                "21": "Biere De Dephilosophie"
+            }
+
+
 class   Hitbox:
     def __init__(self, pos_x, pos_y, width, height):
         self.x = pos_x
         self.y = pos_y
         self.width = width
         self.height = height
-        self.state = -1
 
     def update_box(self, new_x, new_y):
         self.x = new_x
@@ -102,6 +127,7 @@ class   Player:
         self.inventory = [-1 for x in range(20)]
         self.inventory_case_img = pygame.image.load('resources/sprites/inventory_case.png')
         self.handled = 0
+        self.state = -1
 
     def load_sprites(self):
         self.top_walk, self.bot_walk, self.right_walk, self.left_walk = [], [], [], []
@@ -130,18 +156,16 @@ class   Player:
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
-                    print("THERE")
                     if len(self.inventory) == 0:
                         return
                     potion = potions_drink[self.inventory[self.handled]]
-                    print(potion)
                     font = pygame.font.Font('resources/fonts/dpcomic.ttf', 16)
                     text_surface = font.render(potion[0], True, (255, 255, 255))
                     pos = (self.x, self.y)
                     text_rect = text_surface.get_rect(midbottom=pos)
                     screen.blit(text_surface, text_rect)
                     if potion[1]: # is drinkable
-                        player.state = potion[2]
+                        self.state = potion[2]
                     return True
         return False
 
@@ -191,4 +215,4 @@ class   Player:
             return self.right_walk[self.step], (self.x, self.y)
         if self.direction == WEST:
             return self.left_walk[self.step], (self.x, self.y)
-            
+

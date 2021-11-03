@@ -26,7 +26,8 @@ class Room:
             exit(1)
         frames = []
         paths = [path for path in os.listdir(sprites_path)]
-        paths.remove('.DS_Store')
+        if '.DS_Store' in paths:
+            paths.remove('.DS_Store')
         paths.sort()
         for path in paths:
             frames.append(pygame.image.load(sprites_path + path))
@@ -195,6 +196,11 @@ class Room:
         for index, i in enumerate(player.inventory):
             if i != -1:
                 if index == player.handled:
+                    font = pygame.font.Font('resources/fonts/dpcomic.ttf', 20)
+                    text_surface = font.render(potions_names[str(player.inventory[index])], True, (255, 255, 255))
+                    pos = (64, 640)
+                    text_rect = text_surface.get_rect(midbottom=pos)
+                    screen.blit(text_surface, text_rect)
                     screen.blit(player.handled_image, (x, 660))
                 else:
                     screen.blit(player.inventory_case_img, (x, 660))
