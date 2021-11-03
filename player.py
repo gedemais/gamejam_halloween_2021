@@ -16,7 +16,7 @@ potions_ids =   {
                 "Vodka": 4,
                 "Potion De Levitation": 5,
                 "Essence": 6,
-                "Nytroglycerine": 7,
+                "Nitroglycerine": 7,
                 "Solution d'Eau De Feu": 8,
                 "Eau Benite": 9,
                 "Eau De Galadriel": 10,
@@ -65,8 +65,9 @@ class   Player:
         self.y = y
         self.load_sprites()
         self.hitbox = Hitbox(x, y, width=32, height=32)
-        self.inventory = [0 for x in range(20)]
+        self.inventory = [-1 for x in range(20)]
         self.inventory_case_img = pygame.image.load('resources/sprites/inventory_case.png')
+        self.handled = 0
 
     def load_sprites(self):
         self.top_walk, self.bot_walk, self.right_walk, self.left_walk = [], [], [], []
@@ -82,14 +83,24 @@ class   Player:
             x += res
 
         x = 0
-        res = 64
+        res = 48
         self.potions_images = []
         potion_image = pygame.image.load('resources/sprites/fioles.png')
         for i in range(22):
             self.potions_images.append(potion_image.subsurface(x, 0, res, res))
             x += res
 
-    #def take_potion()
+        self.handled_image = pygame.image.load('resources/sprites/selected.png')
+
+    def take_potion(self, potions):
+        for i, potion in enumerate(potions):
+            if self.hitbox.is_hit(Hitbox(potion[1][0], potion[1][1], 48, 48)):
+                for j, c in enumerate(self.inventory):
+                    if c == -1:
+                        self.inventory[j] = potion[0]
+                        potions.pop(i)
+                        return
+
 
     def walk(self, arrows, room):
         tmp_x = self.x

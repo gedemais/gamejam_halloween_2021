@@ -56,21 +56,16 @@ class Room:
         for i in range(nb_rand_potions):
 
             potion_id = 2
-            while potion_id in (2, 5, 8, 11):
+            while potion_id in (2, 4, 5, 7, 8, 9, 10, 11):
                 potion_id = randrange(11)
-
-            for line in self.maze:
-                print(line)
 
             x = randrange(1, 21)
             y = randrange(1, 16)
-            if self.maze[y][x] == 0:
+            while self.maze[y][x] != 1:
                 x = randrange(1, 21)
-                y = randrange(1, 16)
+                y = randrange(1, 15)
 
-
-            print(x, y)
-            potion = (potion_id, (x * 48, y * 48))
+            potion = (potion_id, ((x + 1) * 48, y * 48))
             self.potions.append(potion)
 
     def make_maze(self, w, h, sprite_path, pos_x, pos_y):
@@ -151,6 +146,7 @@ class Room:
         del(self.maze)
 
     def run(self, screen, player, events, keys):
+        player.take_potion(self.potions)
         self.draw(screen, player, keys)
         self.handle_interactions(screen, player, events)
 
@@ -194,8 +190,14 @@ class Room:
 
         screen.blit(img, dims)
 
-        x = 0
-        for i in player.inventory:
-            if i != 0:
-                screen.blit(player.inventory_case_img, (x, 660))
-            x += 64
+        # Inventory
+        x = 64
+        for index, i in enumerate(player.inventory):
+            if i != -1:
+                if index == player.handled:
+                    screen.blit(player.handled_image, (x, 660))
+                else:
+                    screen.blit(player.inventory_case_img, (x, 660))
+                screen.blit(player.potions_images[i], (x + 8, 670))
+
+            x += 48

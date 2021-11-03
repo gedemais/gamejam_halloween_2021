@@ -56,6 +56,13 @@ rooms[room].add_wallbox(1280, -10, 10, 740)
 rooms[room].add_wallbox(-10, -10, 1290, 65)
 rooms[room].add_wallbox(-10, 720, 1290, 65)
 
+# Potions
+rooms[room].potions.append((0, (365, 280)))
+rooms[room].potions.append((1, (865, 280)))
+rooms[room].potions.append((3, (365, 625)))
+rooms[room].potions.append((6, (865, 625)))
+rooms[room].potions.append((9, (600, 340)))
+
 
 # Portals
 rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 50)
@@ -72,7 +79,7 @@ rooms[room].add_wallbox(1210, 390, 72, 142)
 rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
-rooms[room].add_potions(potions_ids["Cire d'abeille"], 3)
+rooms[room].add_potions(potions_ids["Vodka"], 2)
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
@@ -87,6 +94,7 @@ rooms[room].add_wallbox(1190, 440, 72, 96)
 rooms[room].add_sprite('resources/sprites/portals/green.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].add_potions(potions_ids["Nitroglycerine"], 2)
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
@@ -101,6 +109,7 @@ rooms[room].add_wallbox(1210, 470, 56, 96)
 rooms[room].add_sprite('resources/sprites/portals/red.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].add_potions(potions_ids["Eau De Galadriel"], 2)
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
@@ -115,6 +124,7 @@ rooms[room].add_wallbox(1200, 450, 96, 128)
 rooms[room].add_sprite('resources/sprites/portals/purple.png', 1200, 550)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1103, 150)
 rooms[room].add_animation('resources/sprites/epreuves/anim_eau/', 8, 1196, 150)
+rooms[room].add_potions(potions_ids["Eau Benite"], 2)
 
 # Walls
 rooms[room].add_wallbox(-10, -10, 10, 740)
@@ -252,7 +262,7 @@ def toggle_bench_hook():
 def open_bench():
     if bench_hook == False:
         return
-    screen.blit(bench, (100, 66))
+    screen.blit(bench, (100, 48))
 
 rooms['spawner'].add_interaction("Appuyez sur E pour experimenter",
                                 pygame.K_e,
@@ -265,6 +275,7 @@ rooms['spawner'].add_interaction("Appuyez sur E pour experimenter",
 events = []
 
 def handle_keys(events):
+    global player
     global keys
     global room
     global v
@@ -298,6 +309,14 @@ def handle_keys(events):
                     keys[EAST] = False
             if event.key == pygame.K_v:
                 v = False
+
+        if event.type == pygame.MOUSEWHEEL:
+            player.handled += event.y
+            nb_potions = len(player.inventory) - player.inventory.count(-1) - 1
+            if player.handled > nb_potions:
+                player.handled = 0
+            if player.handled < 0:
+                player.handled = nb_potions
 
 
 def run():
