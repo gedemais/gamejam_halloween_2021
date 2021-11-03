@@ -560,7 +560,7 @@ def mixer(player, key):
                 mixer_out = index
                 found = True
                 break
-        if not found:
+        if not found or mixer_in[0] == mixer_in[1]:
             error_time = 60
             mixer_in = [-1, -1]
             mixer_out = -1
