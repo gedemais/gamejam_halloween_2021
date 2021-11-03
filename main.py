@@ -648,7 +648,7 @@ def handle_keys(events):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 exit(0)
-            if potions_hook == False and bench_hook == False:
+            if potions_hook == False and bench_hook == False and (True not in [dialogue_dumbledore_on, dialogue_poseidon_on, dialogue_panoramix_on, dialogue_tortue_genial_on, dialogue_gandalf_on]):
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     keys[NORTH] = True
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:
@@ -661,7 +661,7 @@ def handle_keys(events):
                 v = True
 
         if event.type == pygame.KEYUP:
-            if potions_hook == False and bench_hook == False:
+            if potions_hook == False and bench_hook == False and (True not in [dialogue_dumbledore_on, dialogue_poseidon_on, dialogue_panoramix_on, dialogue_tortue_genial_on, dialogue_gandalf_on]):
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
                     keys[NORTH] = False
                 if event.key == pygame.K_DOWN or event.key == pygame.K_s:

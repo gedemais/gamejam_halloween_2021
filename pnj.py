@@ -37,7 +37,9 @@ Dialogue1 = [
 
 ("Hum. Le jeu des Limbes est simple. Quatre portes, quatre salles, quatre epreuves. Quatre maisons? Euh... pardon.", 1, False), 
 
-("Les potions sont tes amies.  Appuies sur E pour interagir avec le decor . Et pour finir .... ", 1, False),
+("Les potions sont tes amies. Appuies sur E pour interagir avec le decor.", 1, False), 
+
+("Utilise ta molette pour te deplacer dans l inventaire, B pour Boire une potion,  et pour finir...", 1, False),
 
 ("Oui?", 0, False),
 
