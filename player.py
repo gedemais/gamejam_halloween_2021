@@ -159,7 +159,7 @@ class   Player:
         self.y = y
         self.load_sprites()
         self.hitbox = Hitbox(x, y, width=32, height=32)
-        self.inventory = [-1 for x in range(20)]
+        self.inventory = []
         self.inventory_case_img = pygame.image.load('resources/sprites/inventory_case.png')
         self.handled = 0
         self.state = -1
@@ -192,7 +192,8 @@ class   Player:
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_b:
-                    if len(self.inventory) == 0:
+                    length = len(self.inventory)
+                    if length == 0 or self.handled >= length:
                         return
                     potion = potions_drink[self.inventory[self.handled]]
                     font = pygame.font.Font('resources/fonts/dpcomic.ttf', 16)
@@ -209,11 +210,9 @@ class   Player:
     def take_potion(self, potions):
         for i, potion in enumerate(potions):
             if self.hitbox.is_hit(Hitbox(potion[1][0], potion[1][1], 48, 48)):
-                for j, c in enumerate(self.inventory):
-                    if c == -1:
-                        self.inventory[j] = potion[0]
-                        potions.pop(i)
-                        return
+                self.inventory.insert(0, potion[0])
+                potions.pop(i)
+                return
 
 
     def walk(self, arrows, room):

@@ -81,6 +81,14 @@ rooms[room].potions.append((3, (365, 625)))
 rooms[room].potions.append((6, (865, 625)))
 rooms[room].potions.append((9, (600, 340)))
 
+#rooms[room].potions.append((2, (600, 440)))
+#rooms[room].potions.append((5, (600, 440)))
+#rooms[room].potions.append((8, (600, 440)))
+#rooms[room].potions.append((11, (600, 440)))
+#rooms[room].potions.append((12, (600, 440)))
+#rooms[room].potions.append((21, (600, 440)))
+
+
 
 # Portals
 rooms[room].add_sprite('resources/sprites/portals/blue.png', 1200, 50)
@@ -565,14 +573,12 @@ def mixer(player, key):
             mixer_in = [-1, -1]
             mixer_out = -1
             return
+
         player.inventory.remove(mixer_in[0])
         player.inventory.remove(mixer_in[1])
-        for j, c in enumerate(player.inventory):
-            if c == -1:
-                player.inventory[j] = mixer_out
-                mixer_in = [-1, -1]
-                mixer_out = -1
-                break
+        player.inventory.insert(0, mixer_out)
+        player.handled = 0
+
         mixer_in = [-1, -1]
         mixer_out = -1
 
@@ -603,15 +609,15 @@ def open_bench(player, events):
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_1:
                 alambic(player)
-            elif event.key == pygame.K_4:
+            elif event.key == pygame.K_4 and alambic_in != -1:
                 player.inventory.remove(alambic_in)
-                for i in range(2):
-                    for j, c in enumerate(player.inventory):
-                        if c == -1:
-                            player.inventory[j] = alambic_out[i]
-                            break
+                player.inventory.insert(0, alambic_out[0])
+                player.inventory.insert(0, alambic_out[1])
+                player.handled = 0
+
                 alambic_in = -1
                 alambic_out = []
+
             elif event.key == pygame.K_2 or event.key == pygame.K_3 or event.key == pygame.K_5:
                 mixer(player, event.key)
 
